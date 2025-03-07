@@ -44,7 +44,7 @@ const useTree = () => {
   return context;
 };
 
-interface TreeViewComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
+type TreeViewComponentProps = React.HTMLAttributes<HTMLDivElement>;
 
 type Direction = "rtl" | "ltr" | undefined;
 
@@ -134,7 +134,7 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
       if (initialSelectedId) {
         expandSpecificTargetedElements(elements, initialSelectedId);
       }
-    }, [initialSelectedId, elements]);
+    }, [initialSelectedId, elements, expandSpecificTargetedElements]);
 
     const direction = dir === "rtl" ? "rtl" : "ltr";
 
@@ -201,8 +201,7 @@ const TreeIndicator = forwardRef<
 
 TreeIndicator.displayName = "TreeIndicator";
 
-interface FolderComponentProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> {}
+type FolderComponentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>;
 
 type FolderProps = {
   expandedItems?: string[];
@@ -225,7 +224,6 @@ const Folder = forwardRef<
       children,
       ...props
     },
-    ref,
   ) => {
     const {
       direction,
@@ -287,7 +285,6 @@ const File = forwardRef<
   HTMLButtonElement,
   {
     value: string;
-    handleSelect?: (id: string) => void;
     isSelectable?: boolean;
     isSelect?: boolean;
     fileIcon?: React.ReactNode;
@@ -297,7 +294,6 @@ const File = forwardRef<
     {
       value,
       className,
-      handleSelect,
       isSelectable = true,
       isSelect,
       fileIcon,
@@ -334,7 +330,12 @@ const File = forwardRef<
 
 File.displayName = "File";
 
-const CollapseButton = ({ className, elements, expandAll = false, children, ...props }: { className?: string; elements: TreeViewElement[]; expandAll?: boolean; children?: React.ReactNode } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+const CollapseButton = ({ elements, expandAll = false, children, className, ...props }: { 
+  elements: TreeViewElement[]; 
+  expandAll?: boolean; 
+  children?: React.ReactNode;
+  className?: string; 
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const { expandedItems, setExpandedItems } = useTree();
 
   const expendAllTree = useCallback((elements: TreeViewElement[]) => {
@@ -351,19 +352,19 @@ const CollapseButton = ({ className, elements, expandAll = false, children, ...p
 
   const closeAll = useCallback(() => {
     setExpandedItems?.([]);
-  }, []);
+  }, [setExpandedItems]);
 
   useEffect(() => {
     console.log(expandAll);
     if (expandAll) {
       expendAllTree(elements);
     }
-  }, [expandAll]);
+  }, [expandAll, elements, expendAllTree]);
 
   return (
     <Button
       variant={"ghost"}
-      className="absolute bottom-1 right-2 h-8 w-fit p-1"
+      className={cn("absolute bottom-1 right-2 h-8 w-fit p-1", className)}
       onClick={
         expandedItems && expandedItems.length > 0
           ? closeAll
