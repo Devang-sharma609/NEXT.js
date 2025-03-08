@@ -1,5 +1,7 @@
 import { CodeBlock } from "@/components/ui/code-block";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { RainbowButton } from "@/components/magicui/rainbow-button";
+import Link from "next/link";
 
 export default function page() {
   const POST = `fetch('http://localhost:3000/api/endpoint', {
@@ -30,10 +32,10 @@ export default function page() {
   const getResp = `{
     message: 'Your Name is: ', name: 'YOUR_NAME'
     }`;
-    
-    return (
-      <div className="relative flex flex-col h-screen w-screen items-center justify-center overflow-hidden bg-black p-20">
-      <BackgroundBeams/>
+
+  return (
+    <div className="relative flex flex-col h-screen w-screen items-center justify-center overflow-hidden bg-black p-20">
+      <BackgroundBeams />
       <p className="text-white text-3xl pb-4 font-family-sans">
         Press F12, copy the JSON of the request you want to hit, paste it into
         the console and voila!✨
@@ -61,13 +63,16 @@ export default function page() {
           code={GET}
         />
         <div className="ml-4"></div>
-          <CodeBlock
-            language="json"
-            filename="Expected Response"
-            highlightLines={[]}
-            code={getResp}
-          />
+        <CodeBlock
+          language="json"
+          filename="Expected Response"
+          highlightLines={[]}
+          code={getResp}
+        />
       </div>
+      <Link href="/last">
+        <RainbowButton className="mt-6">Next</RainbowButton>
+      </Link>
     </div>
   );
 }
